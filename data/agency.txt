@@ -1,0 +1,94 @@
+**Agentia: Your Ultimate AI Automation Agency Platform**
+
+---
+
+**Welcome to Agentia**
+
+Agentia is the premier service delivery platform designed specifically for AI Automation Agency owners. With Agentia, you can effortlessly create, manage, and deploy AI solutions for your clients, revolutionizing the way you deliver services.
+
+---
+
+**Join Over 14,000 AI Agency Owners**
+
+Agentia is trusted by thousands of agency owners worldwide. Join our community and experience the power of AI automation.
+
+---
+
+**The Complete AI Agent Platform**
+
+Agentia offers a comprehensive suite of features to streamline your AI development process:
+
+- **Select Your Foundational Model**: At Agentia, we understand the importance of flexibility and choice when it comes to selecting your foundational model. That's why we offer support for a wide array of options, including all OpenAI models and various other open-source models like Llama3, Anthropic, Mistral, and Gemini Pro. With this diverse selection, you can tailor your technology stack precisely to your project requirements, ensuring the best possible performance and outcomes for your clients.
+
+- **Perform Actions With Tooling**: Seamlessly integrate with our tool suite, including voice-calling via Bland.ai to allow for your agent to engage in voice calling, or bring your own tools to allow your agent to perform custom actions. Enhance your agent's capabilities by enabling it to interact with various platforms and systems.
+
+- **Craft The Perfect Prompt**: Boost your agent's performance with templated prompts that use the latest best practices. Make the right adjustments to your prompt using our prompt improvement system, ensuring optimal communication with your clients.
+
+- **Zero Downtime with Versioning**: Agentia is the only platform that allows you to tweak your assistants offline and seamlessly transition them live, completely eliminating agent downtime. Make updates and improvements without disrupting your services.
+
+- **Train with your Own Data**: Tailor your agents to perfection using your own datasets and leverage the power of retrieval augmented generation (RAG) for unparalleled customization. Utilize your proprietary data to create highly personalized solutions for your clients.
+
+- **Fast-Track Developments with Templates**: Choose from Agentia's templates and customize them for your needs, significantly cutting down on development time. Jumpstart your projects with pre-built templates tailored to various industries and use cases.
+
+---
+
+**Plans and Pricing**
+
+Choose the plan that best suits your agency's needs:
+
+1. **Free Plan**
+   - Foundational Model Selection
+   - Template Prompting
+   - Versioning (Limited)
+   - Train with Sample Data
+   - Price: $0/month
+
+2. **Pro Plan**
+   - All Free Plan Features
+   - Advanced Tooling Integration
+   - Prompt Improvement System
+   - Enhanced Versioning
+   - Train with Custom Data
+   - Price: $49/month
+
+3. **Premium Plan**
+   - All Pro Plan Features
+   - Priority Support
+   - Exclusive Templates
+   - Custom Tooling Integration
+   - Dedicated Account Manager
+   - Price: $99/month
+
+---
+
+**Built By Agency Owners, For Agency Owners**
+
+Agentia was developed by Morningside AI, a leading AI Automation Agency led by Liam Ottley, the creator of the AI Agency model. With our deep understanding of agency challenges, we've created a tool that simplifies AI agent creation and deployment, making your workflow more efficient and effective.
+
+---
+
+**Got Questions?**
+
+- *How much does Agentia cost?*
+  Visit our website or contact support@agentivehub.com for pricing details.
+
+- *Why do I need to connect my OpenAI API key to Agentia?*
+  Connecting your API key enables seamless integration with OpenAI's models, enhancing your agent's capabilities.
+
+- *What can I build with Agentia?*
+  Build custom AI agents tailored to your clients' needs, spanning various industries and use cases. From customer service chatbots to personalized recommendation systems, the possibilities are endless.
+
+- *Can't I Just Use The OpenAI Playground?*
+  Agentia offers a more comprehensive suite of features specifically tailored for agency use, streamlining the development and deployment process. While the OpenAI Playground is a valuable tool for experimentation, Agentia provides advanced functionality for real-world applications.
+
+- *Do You Support API Integrations?*
+  Yes, Agentia supports custom API integrations to enhance your agent's functionality. Integrate with third-party services and systems to create seamless workflows for your clients.
+
+- *I've Signed Up For The Waitlist, When Can I Expect To Be Let On?*
+  Our team is working diligently to onboard waitlisted users. You'll receive an invitation as soon as spots become available.
+
+---
+
+**Join Agentia Today**
+
+Unlock the power of AI automation for your agency. Join our waitlist now and take your services to the next level.

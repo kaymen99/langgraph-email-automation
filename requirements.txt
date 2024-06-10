@@ -1,0 +1,12 @@
+langchain
+langchain_community 
+langchain-groq 
+langgraph 
+faiss-cpu 
+sentence_transformers
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+beautifulsoup4
+python-dotenv
+colorama
