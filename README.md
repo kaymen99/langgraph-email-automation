@@ -44,8 +44,8 @@ This is the detailed flow of the system:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/customer-support-email-automation.git
-   cd customer-support-email-automation
+   git clone https://github.com/kaymen99/langgraph-email-automation.git
+   cd langgraph-email-automation
    ```
 
 2. **Create and activate a virtual environment:**
@@ -87,6 +87,12 @@ This is the detailed flow of the system:
 ### Customization
 
 You can customize the behavior of each agent by modifying the corresponding methods in the `Nodes` class or the agents prompt `prompts` located in the `src` directory.
+
+You can also add your own agency data into the `data` folder, then you must create your own vector store by running (update first the data path):
+
+```sh
+python create_index.py
+```
 
 ### Contributing
 
