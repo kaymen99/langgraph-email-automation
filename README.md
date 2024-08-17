@@ -5,30 +5,62 @@ Keywords: Customer support automation, email automation, Langchain, Langgraph, A
 Author: kaymen99
 -->
 
-<meta name="title" content="Customer Support Email Automation System | Langchain/Langgraph Integration">
-<meta name="description" content="Automate customer support emails with our system built using Langchain/Langgraph. Features include email categorization, query synthesis, draft email creation, and email verification.">
-<meta name="keywords" content="Customer support automation, email automation, Langchain, Langgraph, AI email agents, Gmail API, Python email automation, email categorization, email verification">
-<meta name="author" content="kaymen99">
-<meta property="og:title" content="Customer Support Email Automation System | Langchain/Langgraph Integration">
-<meta property="og:description" content="Automate customer support emails with our system built using Langchain/Langgraph. Features include email categorization, query synthesis, draft email creation, and email verification, AI agents, AI tools.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://github.com/kaymen99/langgraph-email-automation">
+# Customer Support Email Automation with AI Agents and RAG
 
-# Customer Support Email Automation
+**A Langgraph system for streamlining client interactions, ensuring every customer receives a quick and accurate response. 🌟**
 
-I used Langchain/Langgraph to build a customer support email automation system for an AI agency. It consists of multiple AI agents working together to achieve the following steps:
+## Introduction
 
-- **Check for new emails in the agency GMAIL inbox.**
-- **Categorize email into 'customer_complaint', 'product_enquiry', 'customer_feedback', 'unrelated'.**
-- **Synthesize queries to extract relevant information from RAG to answer customer.**
-- **Write a draft email to respond to the client.**
-- **Email verifier: Check the quality and correct formatting of the email, and ensure its relevancy.**
+In today's fast-paced environment, customers demand quick, accurate, and personalized responses—expectations that can overwhelm traditional support teams. Managing large volumes of emails, categorizing them, crafting appropriate replies, and ensuring quality consumes significant time and resources, often leading to delays or errors, which can harm customer satisfaction.
+
+**Customer Support Email Automation** is an AI solution designed to enhance customer communication for businesses. Leveraging a Langgraph-driven workflow, multiple AI agents collaborate to efficiently manage, categorize, and respond to customer emails. The system also implements RAG (Retrieval-Augmented Generation) technology to deliver accurate responses to any business or product-related questions.
+
+## Features
+
+### Smart Email Management with AI Agents
+
+- Continuously monitors the agency's Gmail inbox
+- Categorizes emails into 'customer complaint,' 'product inquiry,' 'customer feedback,' or 'unrelated'
+- Automatically handles irrelevant emails to maintain efficiency
+
+### AI Response Generation
+
+- Quickly drafts emails for customer complaints and feedback using Langgraph
+- Utilizes RAG techniques to answer product-related questions accurately
+- Creates personalized email content tailored to each customer's needs
+
+### Quality Assurance with AI
+
+- Automatically checks email quality, formatting, and relevance
+- Ensures every response meets high standards before reaching the client
+
+### Advanced AI Technology Stack
+
+- Employs Langchain/Langgraph to manage the workflow of the AI agents and LLMs
+- Utilizes multiple AI agents working in tandem to process various types of emails
+
+## How It Works
+
+1. **Email Monitoring**: The system constantly checks for new emails in the agency's Gmail inbox using the Gmail API.
+2. **Email Categorization**: AI agents sort each email into predefined categories.
+3. **Response Generation**: 
+   - For complaints or feedback: The system quickly drafts a tailored email response.
+   - For product questions: The system uses RAG to retrieve accurate information from agency documents and generates a response.
+4. **Quality Assurance**: Each draft email undergoes AI quality and formatting checks.
+5. **Sending**: Approved emails are sent to the client promptly, ensuring timely communication.
+
+## Benefits
+
+- **Time Efficiency**: Significantly reduces time spent on email management.
+- **Enhanced Accuracy**: Improves the precision and relevance of email responses through AI and RAG.
+- **Consistency**: Provides a uniform experience across all customer communications.
+- **Improved Focus**: Allows support teams to concentrate on complex issues rather than routine email tasks.
 
 ## System Flowchart
 
 This is the detailed flow of the system:
 
-[![](https://mermaid.ink/img/pako:eNp1ks9uwjAMxl8lyqlI8AI9TBqUP5edthMUVVHilog26RwXxCjvPreFrWhaLkn8_T47cXKV2huQscxLf9YHhSQ-ktQJHq-7QLzfi9nsRcyj0iuTOThnUClbhskAzTu1haqmSyu2O3BmPxZq9BpCaMVipxVB4dF-wZDhzi0enGk0CYSSMdOKJNLeBUIOZqiK7LOBQJZDk7HNeRJ_rKvojJYgM6hyGmrdTUl_lWWEQGjhBFmOvurS3_Vlr__vX_X6OjoB2vySFeAAu5pP0Lo_WeBOtGITdfOTvHlq2NiC0NflC4zJ3w6mTk5lBcjJDD_YtaNSSQeoIJUxL43CYypTd2NONeTfL07LmHsIU4m-KQ4yzlUZeNfUhs-dWFWgqn6iYCx5fBv-Q_8tprJWbuv9g7l9A0wuuN4?type=png)](https://mermaid.live/edit#pako:eNp1ks9uwjAMxl8lyqlI8AI9TBqUP5edthMUVVHilog26RwXxCjvPreFrWhaLkn8_T47cXKV2huQscxLf9YHhSQ-ktQJHq-7QLzfi9nsRcyj0iuTOThnUClbhskAzTu1haqmSyu2O3BmPxZq9BpCaMVipxVB4dF-wZDhzi0enGk0CYSSMdOKJNLeBUIOZqiK7LOBQJZDk7HNeRJ_rKvojJYgM6hyGmrdTUl_lWWEQGjhBFmOvurS3_Vlr__vX_X6OjoB2vySFeAAu5pP0Lo_WeBOtGITdfOTvHlq2NiC0NflC4zJ3w6mTk5lBcjJDD_YtaNSSQeoIJUxL43CYypTd2NONeTfL07LmHsIU4m-KQ4yzlUZeNfUhs-dWFWgqn6iYCx5fBv-Q_8tprJWbuv9g7l9A0wuuN4)
+[![](https://mermaid.ink/img/pako:eNqdk8GO2jAQhl9lZKSeQELlAjlUgiSgSi1qd9sKkfRg4jFYJDa1nWXpZt-9A5jdVNrDKjk5nv-bGf_2PLHCCGQRk6U5FjtuPfxIcg30TbN4h8UelniEtOKqdKA0LL5OP3_5HRQwGHxqlqYlaWCdpVrAN2sKdO5_4Wuiuam1aGCWxdzj1lj1F6-hAMwuwE9tsSQBKdft_bh23lRoITbVoeRKezAW5ohiw4t9A0mWWC79GxmpLVEXFNF_amVPDcTZ_Un7HbpzB99rtAodSMp2N10EMj6TsMoW6GGq3ZHqSmuqlmJ1UbxVNblE0uwXJZana4jK8FL5E3wgG2zFvVd6G_Tppcvp4WDNAzYwz-6RzGxnnF8dOB8cPb4YkwaHUTi4wwfllNFkRJtZ4mNojozP9TXk_KlEuh-pyjLqyYnsO2_NHqPeeDwO68FRCb-LPh4e-4UpjY16w-Gwjc8Cvtm84qPR6L14fKu-2XTBk1t12QlPX84-6YLPAz6RnfDVrXo3fB1wIcT7cdZnNDz0EATN_dM5Xc5oBCrMWURLwe0-Z7l-Jh2vvaEBKVjkbY19Zk293bFI8tLRX30QNJ2J4lvLq7D7_A-v-mU8?type=png)](https://mermaid.live/edit#pako:eNqdk8GO2jAQhl9lZKSeQELlAjlUgiSgSi1qd9sKkfRg4jFYJDa1nWXpZt-9A5jdVNrDKjk5nv-bGf_2PLHCCGQRk6U5FjtuPfxIcg30TbN4h8UelniEtOKqdKA0LL5OP3_5HRQwGHxqlqYlaWCdpVrAN2sKdO5_4Wuiuam1aGCWxdzj1lj1F6-hAMwuwE9tsSQBKdft_bh23lRoITbVoeRKezAW5ohiw4t9A0mWWC79GxmpLVEXFNF_amVPDcTZ_Un7HbpzB99rtAodSMp2N10EMj6TsMoW6GGq3ZHqSmuqlmJ1UbxVNblE0uwXJZana4jK8FL5E3wgG2zFvVd6G_Tppcvp4WDNAzYwz-6RzGxnnF8dOB8cPb4YkwaHUTi4wwfllNFkRJtZ4mNojozP9TXk_KlEuh-pyjLqyYnsO2_NHqPeeDwO68FRCb-LPh4e-4UpjY16w-Gwjc8Cvtm84qPR6L14fKu-2XTBk1t12QlPX84-6YLPAz6RnfDVrXo3fB1wIcT7cdZnNDz0EATN_dM5Xc5oBCrMWURLwe0-Z7l-Jh2vvaEBKVjkbY19Zk293bFI8tLRX30QNJ2J4lvLq7D7_A-v-mU8)
 
 ## How to Run
 
