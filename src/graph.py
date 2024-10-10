@@ -3,10 +3,10 @@ from .state import GraphState
 from .nodes import Nodes
 
 class Workflow():
-    def __init__(self, llm, retriever):
+    def __init__(self, llm):
         # initiate graph state & nodes
         workflow = StateGraph(GraphState)
-        nodes = Nodes(llm, retriever)
+        nodes = Nodes(llm)
 
         # define all graph nodes
         workflow.add_node("load_new_emails", nodes.load_new_emails)
@@ -15,7 +15,7 @@ class Workflow():
         workflow.add_node("retrieve_from_rag", nodes.retrieve_from_rag)
         workflow.add_node("write_draft_email", nodes.write_draft_email)
         workflow.add_node("verify_generated_email", nodes.verify_generated_email)
-        workflow.add_node("send_email", nodes.send_email)
+        workflow.add_node("create_draft_response", nodes.create_draft_response)
 
         # load new email
         workflow.set_entry_point("load_new_emails")
@@ -30,16 +30,13 @@ class Workflow():
             }
         )
 
-        # recheck for new emails after awaiting
-        # workflow.add_edge("wait_next_run", "load_new_emails")
-
         # route email based on category
         workflow.add_conditional_edges(
             "categorize_email",
             nodes.route_email_based_on_category,
             {
                 "product related": "construct_rag_questions",
-                "not product related": "write_draft_email",
+                "not product related": "write_draft_email"
             }
         )
 
@@ -54,7 +51,7 @@ class Workflow():
             "verify_generated_email",
             nodes.must_rewrite,
             {
-                "send": "send_email",
+                "send": "create_draft_response",
                 "rewrite": "write_draft_email",
                 "stop": "categorize_email"
             }
@@ -62,7 +59,7 @@ class Workflow():
 
         # check if there are still emails to be processed
         workflow.add_conditional_edges(
-            "send_email",
+            "create_draft_response",
             nodes.check_new_emails,
             {
                 "process": "categorize_email",

@@ -35,7 +35,7 @@ You role is to miticulsly analyse the provided email content and categorize it \
 based on the following rules:
     product_enquiry - used when someone is asking for information about a product feature, benefit, service or about pricing \
     customer_complaint - used when someone is complaining about something \
-    customer_feedback - used when someone is giving feedback about a product \
+    customer_feedback - used when someone is giving feedback about a product or service \
     unrelated - when it doesnt relate to any other category \
 
 Your output must be JSON object with no premable or explaination.
@@ -59,10 +59,11 @@ You must adhere to the following rules:
     If category is "customer_complaint" then try to assure we value them and that we will do our best to address their issues. \
     If category is "customer_feedback" then thank the customer for their cooperation and assure that we will take their feedback into account. \
     If category is "unrelated" then ask the customer to provide more information and that we will try our best to help him. \
-Return a JSON object with no premable or explaination, the JSON must two keys: "subject", "email". \
+Return a JSON object with no premable or explaination, the JSON must contain a single key:  "email". \
 Email must be from Agentia team. \
 <|eot_id|><|start_header_id|>user<|end_header_id|>
 EMAIL CATEGORY: {category} \n
+EMAIL SUBJECT: {subject} \n
 EMAIL CONTENT:\n\n {email} \n\n
 INFORMATIONS: \n {informations} \n
 <|eot_id|>

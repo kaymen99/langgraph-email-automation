@@ -1,71 +1,35 @@
-import os, re
+import os
 from colorama import Fore, Style
-from langchain_community.agent_toolkits import GmailToolkit
-from langchain_community.tools.gmail.create_draft import GmailCreateDraft
-from langchain_community.tools.gmail.search import GmailSearch
 from .agents import Agents
+from .tools.GmailTools import GmailToolsClass
+from .state import GraphState, Email
+
 
 class Nodes:
-    """
-    The graph consists on the following nodes:
-      * Load new emails
-      * Categorize email
-      * Design RAG queries
-      * Retrieve from RAG
-      * Write draft email
-      * Verify generated email
-    """
+    def __init__(self, llm):
+        self.agents = Agents(llm)
+        self.gmail_tools = GmailToolsClass()
 
-    def __init__(self, llm, retriever):
+    def load_new_emails(self, state: GraphState) -> GraphState:
         """
-        Initialize the Nodes class with language model and retriever.
+        Loads new emails from Gmail and updates the state.
 
-        @param llm: The language model to be used for generating responses.
-        @param retriever: The retriever to be used for fetching relevant information.
-        """
-        self.agents = Agents(llm, retriever)
-        self.gmail = GmailToolkit()
-
-    def load_new_emails(self, state):
-        """
-        Load new emails from the Gmail account.
-
-        @param state: The current state of the application.
-        @return: Updated state with new emails and viewed email IDs.
+        @param state: The current state of the graph.
+        @return: Updated state with new emails.
         """
         print(Fore.YELLOW + "Loading new emails...\n" + Style.RESET_ALL)
-        search = GmailSearch(api_resource=self.gmail.api_resource)
-        emails = search('newer_than:1d')
-        viewed_emails = state['viewed_emails_ids'] if state['viewed_emails_ids'] else []
-        thread = []
-        new_emails = []
-        for email in emails:
-            if (email['id'] not in viewed_emails) and (email['threadId'] not in thread) and (os.environ['MY_EMAIL'] not in email['sender']):
-                sender = re.search(r'<([^>]+)>', email["sender"]).group(1)
-                thread.append(email['threadId'])
-                new_emails.append(
-                    {
-                    "id": email['id'],
-                    "threadId": email['threadId'],
-                    "snippet": email['snippet'],
-                    "sender": sender
-                    }
-                )
-        viewed_emails.extend([email['id'] for email in emails])
-        return {
-            **state,
-            "emails": new_emails,
-            "viewed_emails_ids": viewed_emails
-        }
+        recent_emails = self.gmail_tools.fetch_recent_emails()
+        # Only keep received emails
+        emails = [Email(**email) for email in recent_emails if (os.environ['MY_EMAIL'] not in email['sender'])]
+        return {**state, "emails": emails}
 
-    def check_new_emails(self, state):
+    def check_new_emails(self, state: GraphState) -> str:
         """
-        Check if there are new emails to process.
+        Checks if there are new emails to process.
 
-        @param state: The current state of the application.
-        @return: "empty" if no new emails, otherwise "process".
+        @param state: The current state of the graph.
+        @return: 'process' if there are new emails, 'empty' otherwise.
         """
-        print(Fore.CYAN + str(state['emails']) + Style.RESET_ALL)
         if len(state['emails']) == 0:
             print(Fore.RED + "No new emails" + Style.RESET_ALL)
             return "empty"
@@ -73,35 +37,29 @@ class Nodes:
             print(Fore.GREEN + "New emails to process" + Style.RESET_ALL)
             return "process"
 
-    # def wait_next_run(self, state):
-    #     print("Processed all emails, waiting for next run!!!")
-    #     time.sleep(3600)
-    #     return state
-
-    def categorize_email(self, state):
+    def categorize_email(self, state: GraphState) -> GraphState:
         """
-        Categorize the current email.
+        Categorizes the current email using the categorize_email agent.
 
-        @param state: The current state of the application.
-        @return: Updated state with email category and sender information.
+        @param state: The current state of the graph.
+        @return: Updated state with email category.
         """
         print(Fore.YELLOW + "Checking email category...\n" + Style.RESET_ALL)
-        emails = state["emails"]
-        current_email = emails[-1]
-        category_result = self.agents.categorize_email.invoke({"email": current_email})
+        current_email = state["emails"][-1]
+        category_result = self.agents.categorize_email.invoke({"email": current_email.body})
         print(Fore.MAGENTA + "Email category:" + Style.RESET_ALL, category_result["category"])
         return {
             **state, 
             "email_category": category_result["category"],
-            "email_sender": current_email["sender"]
+            "current_email": current_email
         }
 
-    def route_email_based_on_category(self, state):
+    def route_email_based_on_category(self, state: GraphState) -> str:
         """
-        Route the email based on its category.
+        Routes the email based on its category.
 
-        @param state: The current state of the application.
-        @return: "product related" if the category is product or price enquiry, otherwise "not product related".
+        @param state: The current state of the graph.
+        @return: 'product related' or 'not product related' based on the email category.
         """
         print(Fore.YELLOW + "Routing email based on category...\n" + Style.RESET_ALL)
         category = state["email_category"]
@@ -110,24 +68,23 @@ class Nodes:
         else:
             return "not product related"
 
-    def construct_rag_questions(self, state):
+    def construct_rag_questions(self, state: GraphState) -> GraphState:
         """
-        Design RAG (Retrieval-Augmented Generation) queries based on the email.
+        Constructs RAG questions based on the email content.
 
-        @param state: The current state of the application.
+        @param state: The current state of the graph.
         @return: Updated state with RAG questions.
         """
         print(Fore.YELLOW + "Designing RAG query...\n" + Style.RESET_ALL)
-        emails = state["emails"]
-        current_email = emails[-1]
-        query_result = self.agents.design_rag_query.invoke({"email": current_email})
+        email_content = state["current_email"].body
+        query_result = self.agents.design_rag_query.invoke({"email": email_content})
         return {**state, "rag_questions": query_result["query"]}
 
-    def retrieve_from_rag(self, state):
+    def retrieve_from_rag(self, state: GraphState) -> GraphState:
         """
-        Retrieve information from internal knowledge based on RAG queries.
+        Retrieves information from internal knowledge based on RAG questions.
 
-        @param state: The current state of the application.
+        @param state: The current state of the graph.
         @return: Updated state with retrieved information.
         """
         print(Fore.YELLOW + "Retrieving information from internal knowledge...\n" + Style.RESET_ALL)
@@ -136,90 +93,95 @@ class Nodes:
         for query in queries:
             rag_result = self.agents.retrieve_docs.invoke(query)
             final_answer += query + "\n" + rag_result + "\n\n"
-        return {**state, "retrieved_infos": final_answer}
+        return {**state, "retrieved_documents": final_answer}
 
-    def write_draft_email(self, state):
+    def write_draft_email(self, state: GraphState) -> GraphState:
         """
-        Write a draft email based on the retrieved information and email category.
+        Writes a draft email based on the current email and retrieved information.
 
-        @param state: The current state of the application.
-        @return: Updated state with the generated email, subject, and number of trials.
+        @param state: The current state of the graph.
+        @return: Updated state with generated email and trial count.
         """
         print(Fore.YELLOW + "Writing draft email...\n" + Style.RESET_ALL)
-        emails = state["emails"]
-        current_email = emails[-1]
         draft_result = self.agents.write_draft_email.invoke({
-            "email": current_email,
+            "email": state["current_email"].body,
+            "subject": state["current_email"].subject,
             "category": state["email_category"],
-            "informations": state["retrieved_infos"]
+            "informations": state["retrieved_documents"]
         })
         email = draft_result["email"]
-        subject = draft_result["subject"]
-        if state['trials'] is None:
-            state['trials'] = 0
-        trials = int(state['trials'])
-        trials += 1
+        trials = state.get('trials', 0) + 1
         return {
             **state, 
-            "email_subject": subject, 
             "generated_email": email, 
             "trials": trials
         }
 
-    def verify_generated_email(self, state):
+    def verify_generated_email(self, state: GraphState) -> GraphState:
         """
-        Verify the generated email.
+        Verifies the generated email using the verify_email agent.
 
-        @param state: The current state of the application.
-        @return: Updated state with the review result.
+        @param state: The current state of the graph.
+        @return: Updated state with email review.
         """
         print(Fore.YELLOW + "Verifying generated email...\n" + Style.RESET_ALL)
-        emails = state["emails"]
-        current_email = emails[-1]
         verify_result = self.agents.verify_email.invoke({
-            "initial_email": current_email,
+            "initial_email": state["current_email"].body,
             "category": state["email_category"],
             "generated_email": state["generated_email"],
-            "informations": state["retrieved_infos"]
+            "informations": state["retrieved_documents"]
         })
         review = verify_result["review"]
         return {**state, "review": review}
 
-    def must_rewrite(self, state):
+    def must_rewrite(self, state: GraphState) -> str:
         """
-        Determine if the email must be rewritten based on the review result.
+        Determines if the email needs to be rewritten based on the review and trial count.
 
-        @param state: The current state of the application.
-        @return: "send" if the email is ready to be sent, "stop" if max trials reached, otherwise "rewrite".
+        @param state: The current state of the graph.
+        @return: 'send' if email is good, 'stop' if max trials reached, 'rewrite' otherwise.
         """
         review = state["review"]
         if review == "send":
             print(Fore.GREEN + "Email is good, ready to be sent!!!" + Style.RESET_ALL)
-            # remove processed email
             state["emails"].pop()
             return "send"
         elif state["trials"] >= 3:
             print(Fore.RED + "Email is not good, we reached max trials must stop!!!" + Style.RESET_ALL)
-            # remove processed email
             state["emails"].pop()
             return "stop"
         else:
             print(Fore.RED + "Email is not good, must rewrite it..." + Style.RESET_ALL)
             return "rewrite"
 
-    def send_email(self, state):
+    def create_draft_response(self, state: GraphState) -> GraphState:
         """
-        Send the generated email.
+        Creates a draft response in Gmail.
 
-        @param state: The current state of the application.
-        @return: The updated state after sending the email.
+        @param state: The current state of the graph.
+        @return: Updated state with reset trial count.
+        """
+        print(Fore.YELLOW + "Creating draft email...\n" + Style.RESET_ALL)
+        self.gmail_tools.create_draft_reply(
+            state["current_email"].id,
+            state["current_email"].sender,
+            f"Re: {state['current_email'].subject}",
+            state["generated_email"]
+        )
+        return {"trials": 0}
+
+    def send_email_response(self, state: GraphState) -> GraphState:
+        """
+        Sends the email response directly using Gmail.
+
+        @param state: The current state of the graph.
+        @return: Updated state with reset trial count.
         """
         print(Fore.YELLOW + "Sending email...\n" + Style.RESET_ALL)
-        # send email
-        draft = GmailCreateDraft(api_resource=self.gmail.api_resource)
-        result = draft({
-            'to': [state["email_sender"]],
-            'subject': state["email_subject"],
-            'message': state["generated_email"]
-        })
-        return state
+        self.gmail_tools.send_reply(
+            state["current_email"].id,
+            state["current_email"].sender,
+            f"Re: {state['current_email'].subject}",
+            state["generated_email"]
+        )
+        return {"trials": 0}

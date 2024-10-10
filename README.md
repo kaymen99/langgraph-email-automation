@@ -1,7 +1,7 @@
 <!--
 Title: Customer Support Email Automation System | Langchain/Langgraph Integration
 Description: Automate customer support emails with our system built using Langchain/Langgraph. Features include email categorization, query synthesis, draft email creation, and email verification.
-Keywords: Customer support automation, email automation, Langchain, Langgraph, AI email agents, Gmail API, Python email automation, email categorization, email verification, AI agents, AT tools
+Keywords: Customer support automation, email automation, Langchain, Langgraph, AI email agents, Gmail API, Python email automation, email categorization, email verification, AI agents, AI tools
 Author: kaymen99
 -->
 
@@ -68,6 +68,7 @@ This is the detailed flow of the system:
 
 - Python 3.7+
 - Groq api key
+- Google Gemini api key (for embeddings)
 - Gmail API credentials
 - Necessary Python libraries (listed in `requirements.txt`)
 
@@ -95,11 +96,12 @@ This is the detailed flow of the system:
 
 4. **Set up environment variables:**
 
-   Create a `.env` file in the root directory of the project and add your GMAIL address, as we are using llama3-70b with Groq you must also get an API key to access it:
+   Create a `.env` file in the root directory of the project and add your GMAIL address, we are using the Groq llama-3.1-70b model and the Google gemini embedding model so you must also get API keys to access them:
 
    ```env
    MY_EMAIL=your_email@gmail.com
    GROQ_API_KEY=your_groq_api_key
+   GOOGLE_API_KEY=your_gemini_api_key
    ```
 
 5. **Ensure Gmail API is enabled:**
@@ -115,6 +117,15 @@ This is the detailed flow of the system:
    ```
 
    The application will start checking for new emails, categorizing them, synthesizing queries, drafting responses, and verifying email quality.
+
+2. **Deploy as API:** you can deploy the workflow as an API using Langserve and FastAPI by running the command below:
+
+   ```sh
+   python deploy_api.py
+   ```
+
+   The workflow api will be running on `localhost:8000`, you can consult the API docs on `/docs` and you can use the langsergve playground (on the route `/playground`) to test it out.
+
 
 ### Customization
 

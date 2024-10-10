@@ -1,11 +1,16 @@
 from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_chroma import Chroma
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from .prompts import *
 
 class Agents():
-    def __init__(self, llm, retriever):
+    def __init__(self, llm):
         # QA assistant chat
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+        vectorstore = Chroma(persist_directory="db", embedding_function=embeddings)
+        retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
         qa_prompt = ChatPromptTemplate.from_template(qa_prompt_template)
         self.retrieve_docs = (
             {"context": retriever, "question": RunnablePassthrough()}

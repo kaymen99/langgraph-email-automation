@@ -1,30 +1,41 @@
-from pprint import pprint
 from colorama import Fore, Style
 from src.graph import Workflow
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
 from dotenv import load_dotenv
 
 # Load all env variables
 load_dotenv()
 
-llm = ChatGroq(model_name="llama3-70b-8192", temperature=0.8)
+llm = ChatGroq(model_name="llama-3.1-70b-versatile", temperature=0.1)
+# llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.1)
 
-print(Fore.YELLOW + "Loading embedding model from HuggingFace" + Style.RESET_ALL)
-embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+# config 
+config = {'recursion_limit': 100}
 
-print(Fore.YELLOW + "Loading local vector store" + Style.RESET_ALL)
-new_vector_store = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
-retriever = new_vector_store.as_retriever()
-
-workflow = Workflow(llm, retriever)
+workflow = Workflow(llm)
 app = workflow.app
 
-# Run the agent
+initial_state = {
+    "emails": [],
+    "current_email": {
+      "id": "",
+      "sender": "",
+      "subject": "",
+      "body": ""
+    },
+    "email_category": "",
+    "generated_email": "",
+    "rag_questions": [],
+    "retrieved_infos": "",
+    "review": "",
+    "trials": 0
+}
+
+# Run the automation
 print(Fore.GREEN + "Starting workflow..." + Style.RESET_ALL)
-for output in app.stream({}):
+for output in app.stream(initial_state, config):
     for key, value in output.items():
-        pprint(Fore.CYAN + f"Finished running: {key}:" + Style.RESET_ALL)
+        print(Fore.CYAN + f"Finished running: {key}:" + Style.RESET_ALL)
 
 
