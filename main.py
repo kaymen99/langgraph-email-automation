@@ -1,34 +1,33 @@
 from colorama import Fore, Style
 from src.graph import Workflow
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 
 # Load all env variables
 load_dotenv()
 
-llm = ChatGroq(model_name="llama-3.1-70b-versatile", temperature=0.1)
-# llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.1)
-
 # config 
 config = {'recursion_limit': 100}
 
-workflow = Workflow(llm)
+workflow = Workflow()
 app = workflow.app
 
 initial_state = {
     "emails": [],
     "current_email": {
       "id": "",
+      "threadId": "",
+      "messageId": "",
+      "references": "",
       "sender": "",
       "subject": "",
       "body": ""
     },
     "email_category": "",
     "generated_email": "",
-    "rag_questions": [],
-    "retrieved_infos": "",
-    "review": "",
+    "rag_queries": [],
+    "retrieved_documents": "",
+    "writer_messages": [],
+    "sendable": False,
     "trials": 0
 }
 

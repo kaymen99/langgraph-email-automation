@@ -2,7 +2,6 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langserve import add_routes
-from langchain_groq import ChatGroq
 from src.graph import Workflow
 from dotenv import load_dotenv
 
@@ -27,10 +26,7 @@ app.add_middleware(
 )
 
 def get_runnable():
-    llm = ChatGroq(model_name="llama-3.1-70b-versatile", temperature=0.1)
-    workflow = Workflow(llm)
-
-    return workflow.app
+    return  Workflow().app
 
 # Fetch LangGraph Automation runnable which generates the workouts
 runnable = get_runnable()
