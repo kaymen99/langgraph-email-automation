@@ -9,40 +9,42 @@ Author: kaymen99
 
 **A Langgraph system for streamlining client interactions, ensuring every customer receives a quick and accurate response. 🌟**
 
-## Introduction
+### **Read the full article [Boost Customer Support: AI Agents, LangGraph, and RAG for Email Automation](https://kaymen.hashnode.dev/boost-customer-support-ai-agents-langgraph-and-rag-for-email-automation)**
 
-In today's fast-paced environment, customers demand quick, accurate, and personalized responses—expectations that can overwhelm traditional support teams. Managing large volumes of emails, categorizing them, crafting appropriate replies, and ensuring quality consumes significant time and resources, often leading to delays or errors, which can harm customer satisfaction.
+## **Introduction**  
 
-**Customer Support Email Automation** is an AI solution designed to enhance customer communication for businesses. Leveraging a Langgraph-driven workflow, multiple AI agents collaborate to efficiently manage, categorize, and respond to customer emails. The system also implements RAG (Retrieval-Augmented Generation) technology to deliver accurate responses to any business or product-related questions.
+In today's **fast-paced environment**, customers demand **quick, accurate, and personalized responses**—expectations that can overwhelm traditional support teams. Managing large volumes of emails, categorizing them, crafting appropriate replies, and ensuring quality consumes **significant time and resources**, often leading to **delays or errors**, which can harm customer satisfaction.  
 
-## Features
+**Customer Support Email Automation** is an **AI solution** designed to enhance **customer communication** for businesses. Leveraging a **Langgraph-driven workflow**, multiple **AI agents** collaborate to efficiently manage, categorize, and respond to customer emails. The system also implements **RAG (Retrieval-Augmented Generation)** technology to deliver **accurate responses** to any business or product-related questions.  
 
-### Email Inbox Management with AI Agents
+## **Features**  
 
-- Continuously monitors the agency's Gmail inbox
-- Categorizes emails into 'customer complaint,' 'product inquiry,' 'customer feedback,' or 'unrelated'
-- Automatically handles irrelevant emails to maintain efficiency
+### **Email Inbox Management with AI Agents**  
 
-### AI Response Generation
+- **Continuously monitors** the agency's Gmail inbox  
+- **Categorizes emails** into '**customer complaint**,' '**product inquiry**,' '**customer feedback**,' or '**unrelated**'  
+- **Automatically handles irrelevant emails** to maintain efficiency  
 
-- Quickly drafts emails for customer complaints and feedback using Langgraph
-- Utilizes RAG techniques to answer product/service related questions accurately
-- Creates personalized email content tailored to each customer's needs
+### **AI Response Generation**  
 
-### Quality Assurance with AI
+- **Quickly drafts emails** for customer complaints and feedback using **Langgraph**  
+- Utilizes **RAG techniques** to answer **product/service-related questions** accurately  
+- **Creates personalized email content** tailored to each customer's needs  
 
-- Automatically checks email quality, formatting, and relevance
-- Ensures every response meets high standards before reaching the client
+### **Quality Assurance with AI**  
 
-## How It Works
+- **Automatically checks** email **quality, formatting, and relevance**  
+- **Ensures every response** meets high standards before reaching the client  
 
-1. **Email Monitoring**: The system constantly checks for new emails in the agency's Gmail inbox using the Gmail API.
-2. **Email Categorization**: AI agents sort each email into predefined categories.
-3. **Response Generation**: 
-   - For complaints or feedback: The system quickly drafts a tailored email response.
-   - For service/product questions: The system uses RAG to retrieve accurate information from agency documents and generates a response.
-4. **Quality Assurance**: Each draft email undergoes AI quality and formatting checks.
-5. **Sending**: Approved emails are sent to the client promptly, ensuring timely communication.
+## **How It Works**  
+
+1. **Email Monitoring**: The system **constantly checks** for new emails in the agency's Gmail inbox using the **Gmail API**.  
+2. **Email Categorization**: **AI agents** sort each email into **predefined categories**.  
+3. **Response Generation**:   
+   - **For complaints or feedback**: The system **quickly drafts** a tailored email response.  
+   - **For service/product questions**: The system uses **RAG** to retrieve **accurate information** from agency documents and generates a response.  
+4. **Quality Assurance**: Each draft email undergoes **AI quality and formatting checks**.  
+5. **Sending**: **Approved emails** are sent to the client **promptly**, ensuring **timely communication**.  
 
 ## System Flowchart
 
