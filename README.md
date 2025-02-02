@@ -5,11 +5,11 @@ Keywords: Customer support automation, email automation, Langchain, Langgraph, A
 Author: kaymen99
 -->
 
-# Customer Support Email Automation with AI Agents and RAG
+# 🚀 **Customer Support Email Automation with AI Agents and RAG**
 
-**A Langgraph system for streamlining client interactions, ensuring every customer receives a quick and accurate response. 🌟**
+### 👉 **[Check Out This Guide: Build the Ultimate AI Email Automation with AI Agents, RAG, and LangGraph!](https://dev.to/kaymen99/boost-customer-support-ai-agents-langgraph-and-rag-for-email-automation-21hj) 🚀**
 
-### **Read the full article [Boost Customer Support: AI Agents, LangGraph, and RAG for Email Automation](https://kaymen.hashnode.dev/boost-customer-support-ai-agents-langgraph-and-rag-for-email-automation)**
+![customer-support-ai-automation](https://github.com/user-attachments/assets/eb061276-0579-4e28-9360-482c8da33a9d)
 
 ## **Introduction**  
 
