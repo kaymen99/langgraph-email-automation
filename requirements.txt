@@ -18,4 +18,3 @@ gunicorn
 fastapi
 # Optional: only needed when USE_IGPT=true
 langchain-igpt
-requests
