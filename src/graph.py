@@ -34,11 +34,14 @@ class Workflow():
         )
 
         # route email based on category
+        # When USE_IGPT=true, product enquiries skip query construction and go
+        # directly to retrieve_from_rag, which uses the iGPT Recall API instead.
         workflow.add_conditional_edges(
             "categorize_email",
             nodes.route_email_based_on_category,
             {
                 "product related": "construct_rag_queries",
+                "product related igpt": "retrieve_from_rag",
                 "not product related": "email_writer", # Feedback or Complaint
                 "unrelated": "skip_unrelated_email"
             }

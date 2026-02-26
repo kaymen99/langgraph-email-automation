@@ -1,3 +1,4 @@
+import os
 from colorama import Fore, Style
 from .agents import Agents
 from .tools.GmailTools import GmailToolsClass
@@ -47,6 +48,9 @@ class Nodes:
         print(Fore.YELLOW + "Routing email based on category...\n" + Style.RESET_ALL)
         category = state["email_category"]
         if category == "product_enquiry":
+            # When iGPT is enabled, skip RAG query construction and go directly to retrieval
+            if os.getenv("USE_IGPT", "").lower() == "true":
+                return "product related igpt"
             return "product related"
         elif category == "unrelated":
             return "unrelated"
@@ -62,13 +66,27 @@ class Nodes:
         return {"rag_queries": query_result.queries}
 
     def retrieve_from_rag(self, state: GraphState) -> GraphState:
-        """Retrieves information from internal knowledge based on RAG questions."""
+        """Retrieves information from internal knowledge based on RAG questions.
+
+        When USE_IGPT=true, uses the iGPT Recall API instead of the ChromaDB RAG pipeline.
+        This skips the construct_rag_queries step entirely — iGPT handles query understanding internally.
+        """
+        # iGPT path: use iGPT Recall API instead of ChromaDB RAG
+        if os.getenv("USE_IGPT", "").lower() == "true":
+            from .tools.igpt_retriever import igpt_retrieve
+            print(Fore.YELLOW + "Retrieving information via iGPT...\n" + Style.RESET_ALL)
+            email_content = state["current_email"].body
+            query = f"Context about this email inquiry: {email_content}"
+            result = igpt_retrieve(query)
+            return {"retrieved_documents": result}
+
+        # Default path: existing ChromaDB RAG pipeline
         print(Fore.YELLOW + "Retrieving information from internal knowledge...\n" + Style.RESET_ALL)
         final_answer = ""
         for query in state["rag_queries"]:
             rag_result = self.agents.generate_rag_answer.invoke(query)
             final_answer += query + "\n" + rag_result + "\n\n"
-        
+
         return {"retrieved_documents": final_answer}
 
     def write_draft_email(self, state: GraphState) -> GraphState:
