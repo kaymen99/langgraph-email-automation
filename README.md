@@ -103,7 +103,7 @@ This is the detailed flow of the system:
    # Optional: Use iGPT instead of ChromaDB RAG (see section below)
    # USE_IGPT=true
    # IGPT_API_KEY=your_igpt_api_key
-   # IGPT_USER=your_igpt_user_id
+   # IGPT_API_USER=your_igpt_user_id
    ```
 
 5. **Ensure Gmail API is enabled:**

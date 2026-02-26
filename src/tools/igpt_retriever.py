@@ -6,7 +6,7 @@ to retrieve context from indexed emails and attachments via natural language que
 
 Requires:
   - IGPT_API_KEY: Bearer token for iGPT API authentication
-  - IGPT_USER: User identifier for the iGPT API
+  - IGPT_API_USER: User identifier for the iGPT API
 
 Docs: https://docs.igpt.ai
 """
@@ -34,10 +34,10 @@ def _get_headers():
 
 def _get_user():
     """Returns the iGPT user identifier."""
-    user = os.getenv("IGPT_USER")
+    user = os.getenv("IGPT_API_USER")
     if not user:
         raise ValueError(
-            "IGPT_USER environment variable is required when USE_IGPT=true. "
+            "IGPT_API_USER environment variable is required when USE_IGPT=true. "
             "Set it to your iGPT user ID."
         )
     return user
