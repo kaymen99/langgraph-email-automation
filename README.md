@@ -99,6 +99,11 @@ This is the detailed flow of the system:
    MY_EMAIL=your_email@gmail.com
    GROQ_API_KEY=your_groq_api_key
    GOOGLE_API_KEY=your_gemini_api_key
+
+   # Optional: Use iGPT instead of ChromaDB RAG (see section below)
+   # USE_IGPT=true
+   # IGPT_API_KEY=your_igpt_api_key
+   # IGPT_API_USER=your_igpt_user_id
    ```
 
 5. **Ensure Gmail API is enabled:**
@@ -133,6 +138,82 @@ You can also add your own agency data into the `data` folder, then you must crea
 ```sh
 python create_index.py
 ```
+
+---
+
+## Alternative: Use iGPT Instead of ChromaDB RAG
+
+[iGPT](https://igpt.ai) is an Email Intelligence API that can replace the entire ChromaDB RAG pipeline with a single API call. It connects to Gmail/Outlook via OAuth, automatically indexes emails and attachments, and exposes a REST endpoint that accepts natural language queries and returns structured context.
+
+### Comparison
+
+| | ChromaDB RAG (Default) | iGPT |
+|---|---|---|
+| **Setup** | Load docs, chunk, embed, store, create retriever chain | Set 3 env vars |
+| **Data source** | Static text files in `data/` folder | Live Gmail/Outlook inbox (auto-indexed) |
+| **Infrastructure** | Local Chroma DB + Google Embeddings API | Hosted API (no infra to manage) |
+| **Code** | ~80 lines across `create_index.py` + `agents.py` + `nodes.py` | ~10 lines in `igpt_retriever.py` |
+| **Maintenance** | Re-run `create_index.py` when data changes | Automatic — new emails indexed in real-time |
+
+### How iGPT Fits in the Workflow
+
+```
+                        ┌─────────────────────────────┐
+                        │     categorize_email         │
+                        └──────────┬──────────────────-┘
+                                   │
+                    ┌──────────────┼───────────────┐
+                    │              │               │
+              product_enquiry   feedback/      unrelated
+                    │           complaint         │
+                    │              │            (skip)
+         ┌─────────┴─────────┐    │
+         │                   │    │
+    USE_IGPT=false     USE_IGPT=true
+         │                   │    │
+  construct_rag_queries      │    │
+         │                   │    │
+  retrieve_from_rag    retrieve_from_rag
+  (ChromaDB)           (iGPT API)
+         │                   │    │
+         └─────────┬─────────┘    │
+                   │              │
+                   ├──────────────┘
+                   │
+             email_writer
+                   │
+            email_proofreader
+                   │
+              send_email
+```
+
+### How to Enable iGPT
+
+1. **Sign up** at [igpt.ai](https://igpt.ai) and connect your email account
+2. **Get your API key** from the iGPT dashboard
+3. **Add to your `.env` file:**
+
+   ```env
+   USE_IGPT=true
+   IGPT_API_KEY=your_api_key
+   IGPT_API_USER=your_user_id
+   ```
+
+4. **Run as usual** — no other changes needed:
+
+   ```sh
+   python main.py
+   ```
+
+When `USE_IGPT=true`, the system skips the `construct_rag_queries` step and calls the iGPT Recall API directly in `retrieve_from_rag`. You do **not** need to run `create_index.py` or maintain a local vector store.
+
+To switch back to ChromaDB RAG, simply remove or set `USE_IGPT=false` in your `.env` file.
+
+> **Try it out:** Test queries in the [iGPT Playground](https://igpt.ai) before integrating.
+
+For API details, see the [iGPT Developer Docs](https://docs.igpt.ai).
+
+---
 
 ### Contributing
 

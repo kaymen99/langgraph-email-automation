@@ -16,3 +16,5 @@ sse_starlette
 uvicorn
 gunicorn
 fastapi
+# Optional: only needed when USE_IGPT=true
+langchain-igpt
