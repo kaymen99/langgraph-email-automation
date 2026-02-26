@@ -196,7 +196,7 @@ python create_index.py
    ```env
    USE_IGPT=true
    IGPT_API_KEY=your_api_key
-   IGPT_USER=your_user_id
+   IGPT_API_USER=your_user_id
    ```
 
 4. **Run as usual** — no other changes needed:
