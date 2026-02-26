@@ -211,6 +211,8 @@ To switch back to ChromaDB RAG, simply remove or set `USE_IGPT=false` in your `.
 
 > **Try it out:** Test queries in the [iGPT Playground](https://igpt.ai) before integrating.
 
+For API details, see the [iGPT Developer Docs](https://docs.igpt.ai).
+
 ---
 
 ### Contributing
