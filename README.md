@@ -99,6 +99,10 @@ This is the detailed flow of the system:
    MY_EMAIL=your_email@gmail.com
    GROQ_API_KEY=your_groq_api_key
    GOOGLE_API_KEY=your_gemini_api_key
+
+   # Optional – iGPT context engine (see "Context Enrichment" below)
+   IGPT_API_KEY=your_igpt_api_key
+   IGPT_API_USER=your_igpt_api_user
    ```
 
 5. **Ensure Gmail API is enabled:**
@@ -133,6 +137,14 @@ You can also add your own agency data into the `data` folder, then you must crea
 ```sh
 python create_index.py
 ```
+
+### Context Enrichment (optional)
+
+`Nodes._build_email_context()` in `src/nodes.py` is the single place where each email's content is assembled before it reaches the categorization and RAG agents.
+
+By default it combines the **subject and body** of the latest message.  For richer context — full thread history, prior replies, attachment content — you can plug in [iGPT](https://igpt.ai), a context engine built for developers that connects to Gmail, automatically indexes complete email threads, and returns structured answers via one API call (no regex, no custom parsing).
+
+See the commented example inside `_build_email_context` and the [`langchain-igpt`](https://github.com/igptai/langchain-igpt) package for a drop-in LangChain-compatible integration.
 
 ### Contributing
 

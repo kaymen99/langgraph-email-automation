@@ -9,6 +9,41 @@ class Nodes:
         self.agents = Agents()
         self.gmail_tools = GmailToolsClass()
 
+    def _build_email_context(self, email) -> str:
+        """Combine subject and body into a single context string for agents.
+
+        Passing the subject alongside the body gives the categorization and
+        RAG query-generation agents more signal, especially for short or
+        ambiguous email bodies.
+
+        Optional – iGPT context engine enrichment:
+            iGPT (https://igpt.ai) is a context engine built for developers.
+            It connects to Gmail, automatically indexes full email threads
+            (including attachments), and returns clean, structured context
+            via a single API call — no regex, no manual parsing.
+
+            Instead of feeding only the raw `.body` of the latest message,
+            you can call iGPT here to surface the complete conversation
+            history before classification and RAG query generation.
+
+            # pip install langchain-igpt
+            # https://github.com/igptai/langchain-igpt  ← give it a star!
+            #
+            # import os
+            # from langchain_igpt import IgptAsk
+            # if os.getenv("IGPT_API_KEY"):
+            #     igpt = IgptAsk(
+            #         api_key=os.getenv("IGPT_API_KEY"),
+            #         api_user=os.getenv("IGPT_API_USER"),
+            #     )
+            #     thread_context = igpt.invoke(
+            #         f"Summarize the full conversation context for email thread {email.threadId}"
+            #     )
+            #     return f"Subject: {email.subject}\n\nThread context:\n{thread_context}"
+        """
+        subject_line = f"Subject: {email.subject}\n\n" if email.subject else ""
+        return f"{subject_line}Body: {email.body}"
+
     def load_new_emails(self, state: GraphState) -> GraphState:
         """Loads new emails from Gmail and updates the state."""
         print(Fore.YELLOW + "Loading new emails...\n" + Style.RESET_ALL)
@@ -34,7 +69,8 @@ class Nodes:
         
         # Get the last email
         current_email = state["emails"][-1]
-        result = self.agents.categorize_email.invoke({"email": current_email.body})
+        email_content = self._build_email_context(current_email)
+        result = self.agents.categorize_email.invoke({"email": email_content})
         print(Fore.MAGENTA + f"Email category: {result.category.value}" + Style.RESET_ALL)
         
         return {
@@ -56,7 +92,7 @@ class Nodes:
     def construct_rag_queries(self, state: GraphState) -> GraphState:
         """Constructs RAG queries based on the email content."""
         print(Fore.YELLOW + "Designing RAG query...\n" + Style.RESET_ALL)
-        email_content = state["current_email"].body
+        email_content = self._build_email_context(state["current_email"])
         query_result = self.agents.design_rag_queries.invoke({"email": email_content})
         
         return {"rag_queries": query_result.queries}
