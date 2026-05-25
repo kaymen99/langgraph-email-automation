@@ -1,13 +1,32 @@
+import os
 from colorama import Fore, Style
 from .agents import Agents
-from .tools.GmailTools import GmailToolsClass
 from .state import GraphState, Email
+
+
+def _create_email_tools():
+    """
+    Factory function to create the appropriate email tools instance.
+
+    Set EMAIL_PROVIDER environment variable to choose the provider:
+      - "gmail" (default): Uses Gmail API (requires OAuth credentials)
+      - "agentmail": Uses AgentMail (requires AGENTMAIL_API_KEY and AGENTMAIL_INBOX_ID)
+    """
+    provider = os.environ.get("EMAIL_PROVIDER", "gmail").lower()
+    if provider == "agentmail":
+        from .tools.AgentMailTools import AgentMailToolsClass
+        print(Fore.CYAN + "Using AgentMail as email provider" + Style.RESET_ALL)
+        return AgentMailToolsClass()
+    else:
+        from .tools.GmailTools import GmailToolsClass
+        print(Fore.CYAN + "Using Gmail API as email provider" + Style.RESET_ALL)
+        return GmailToolsClass()
 
 
 class Nodes:
     def __init__(self):
         self.agents = Agents()
-        self.gmail_tools = GmailToolsClass()
+        self.gmail_tools = _create_email_tools()
 
     def load_new_emails(self, state: GraphState) -> GraphState:
         """Loads new emails from Gmail and updates the state."""
