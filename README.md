@@ -58,6 +58,7 @@ This is the detailed flow of the system:
 * Langserve: simplify API development & deployment (using FastAPI).
 * Groq and Gemini APIs: for LLMs access.
 * Google Gmail API
+* [AgentMail](https://agentmail.to) (optional alternative to Gmail API)
 
 ## How to Run
 
@@ -104,6 +105,34 @@ This is the detailed flow of the system:
 5. **Ensure Gmail API is enabled:**
 
    Follow [this guide](https://developers.google.com/gmail/api/quickstart/python) to enable Gmail API and obtain your credentials.
+
+### Using AgentMail (Alternative to Gmail API)
+
+If you prefer a simpler setup without OAuth, you can use [AgentMail](https://agentmail.to) as the email provider:
+
+1. **Install the AgentMail SDK:**
+
+   ```sh
+   pip install agentmail
+   ```
+
+2. **Add AgentMail credentials to your `.env` file:**
+
+   ```env
+   EMAIL_PROVIDER=agentmail
+   AGENTMAIL_API_KEY=your_agentmail_api_key
+   AGENTMAIL_INBOX_ID=your_inbox_id
+   ```
+
+3. **That's it!** No OAuth setup, no `credentials.json`, no `token.json`. The system will automatically use AgentMail to fetch and send emails.
+
+   > You can create an inbox programmatically with the AgentMail SDK:
+   > ```python
+   > from agentmail import AgentMail
+   > client = AgentMail(api_key="your_api_key")
+   > inbox = client.inboxes.create(display_name="Support Agent")
+   > print(inbox.inbox_id)  # Use this as AGENTMAIL_INBOX_ID
+   > ```
 
 ### Running the Application
 
