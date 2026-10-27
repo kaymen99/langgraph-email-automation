@@ -1,0 +1,17 @@
+cat << 'EOF' >> .gitignore
+.env
+credentials.json
+token.json
+__pycache__/
+*.pyc
+.venv/
+EOF.env
+credentials.json
+token.json
+__pycache__/
+*.pyc
+.venv/
+
+token.json
+credentials.json
+.env
